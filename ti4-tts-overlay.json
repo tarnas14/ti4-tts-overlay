@@ -2,8 +2,66 @@
   "allowHttpBackend": false,
   "backendCommand": "",
   "backendFolderName": "",
-  "certificateExceptions": [],
-  "extensionViews": [],
+  "certificateExceptions": [
+    {
+      "isAllowed": true,
+      "isEphemeral": false,
+      "isOrigin": true,
+      "value": "https://localhost:8080"
+    },
+    {
+      "isAllowed": true,
+      "isEphemeral": false,
+      "isOrigin": true,
+      "value": "wss://localhost:8080"
+    }
+  ],
+  "extensionViews": [
+    {
+      "channelId": "32466573",
+      "configurationAnchor": "video_overlay",
+      "displayChannelName": "tarnas14",
+      "features": {
+        "isBitsEnabled": false,
+        "isChatEnabled": false,
+        "isSubscriptionStatusAvailable": false
+      },
+      "frameSize": {
+        "width": 1280,
+        "height": 720
+      },
+      "id": "1",
+      "isPopout": false,
+      "label": "",
+      "linked": false,
+      "linkedUserId": "",
+      "orientation": "Portrait",
+      "type": "video_overlay",
+      "viewerType": "Broadcaster"
+    },
+    {
+      "channelId": "32466573",
+      "configurationAnchor": "video_overlay",
+      "displayChannelName": "tarnas14",
+      "features": {
+        "isBitsEnabled": false,
+        "isChatEnabled": false,
+        "isSubscriptionStatusAvailable": false
+      },
+      "frameSize": {
+        "width": 1280,
+        "height": 720
+      },
+      "id": "2",
+      "isPopout": false,
+      "label": "",
+      "linked": false,
+      "linkedUserId": "",
+      "orientation": "Portrait",
+      "type": "video_overlay",
+      "viewerType": "Logged-In Viewer"
+    }
+  ],
   "manifest": {
     "anchor": "video_overlay",
     "assetUrls": [],
@@ -51,8 +109,8 @@
     "whitelistedConfigUrls": [],
     "whitelistedPanelUrls": []
   },
-  "frontendCommand": "",
-  "frontendFolderName": "",
+  "frontendCommand": "npm run start",
+  "frontendFolderName": "extensions-boilerplate",
   "name": "ti4-tts-overlay",
   "usingRandomFrontendHostingPort": false,
   "version": 3

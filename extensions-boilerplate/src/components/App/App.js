@@ -3,17 +3,20 @@ import Authentication from '../../util/Authentication/Authentication'
 
 import './App.css'
 
+const ModConfig = ({ channelId, token }) => <p>mod config for {channelId} with token {token}</p>
+
 export default class App extends React.Component{
     constructor(props){
         super(props)
         this.Authentication = new Authentication()
 
-        //if the extension is running on twitch or dev rig, set the shorthand here. otherwise, set to null. 
+        //if the extension is running on twitch or dev rig, set the shorthand here. otherwise, set to null.
         this.twitch = window.Twitch ? window.Twitch.ext : null
         this.state={
             finishedLoading:false,
             theme:'light',
-            isVisible:true
+            isVisible:true,
+            gameState:null,
         }
     }
 
@@ -48,11 +51,12 @@ export default class App extends React.Component{
             })
 
             this.twitch.listen('broadcast',(target,contentType,body)=>{
-                this.twitch.rig.log(`New PubSub message!\n${target}\n${contentType}\n${body}`)
-                // now that you've got a listener, do something with the result... 
+                const gameState = JSON.parse(body.replaceAll('\'', '"'))
 
-                // do something...
-
+                this.setState({gameState})
+                if (this.Authentication.isBroadcaster()) {
+                    // TODO set in the broadcast configuration
+                }
             })
 
             this.twitch.onVisibilityChanged((isVisible,_c)=>{
@@ -70,17 +74,20 @@ export default class App extends React.Component{
             this.twitch.unlisten('broadcast', ()=>console.log('successfully unlistened'))
         }
     }
-    
+
     render(){
+        const {gameState} = this.state
         if(this.state.finishedLoading && this.state.isVisible){
             return (
                 <div className="App">
                     <div className={this.state.theme === 'light' ? 'App-light' : 'App-dark'} >
-                        <p>Hello world!</p>
                         <p>My token is: {this.Authentication.state.token}</p>
-                        <p>My opaque ID is {this.Authentication.getOpaqueId()}.</p>
-                        <div>{this.Authentication.isModerator() ? <p>I am currently a mod, and here's a special mod button <input value='mod button' type='button'/></p>  : 'I am currently not a mod.'}</div>
-                        <p>I have {this.Authentication.hasSharedId() ? `shared my ID, and my user_id is ${this.Authentication.getUserId()}` : 'not shared my ID'}.</p>
+                        <pre>{JSON.stringify(this.Authentication.state, null, 2)}</pre>
+                        <pre>{JSON.stringify(gameState, null, 2)}</pre>
+                        {this.Authentication.isModerator() && <ModConfig
+                            channelId={this.Authentication.getChannelId()}
+                            token={this.Authentication.state.token}
+                        />}
                     </div>
                 </div>
             )
