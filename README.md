@@ -7,6 +7,7 @@ This repository aims to implement a twitch overlay helping in streaming [Twiligh
 ### For broadcaster
 
 - [ ] provide a form to declare data key of the game that is being streamed (which data we want to show to viewers)
+- [ ] provide a manual refresh button for when a new round starts in a pessimistic time in the polling window
 
 ### For viewers
 
