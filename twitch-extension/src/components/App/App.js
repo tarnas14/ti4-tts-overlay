@@ -20,6 +20,7 @@ export default class App extends React.Component{
             theme:'light',
             isVisible:true,
             gameState:null,
+            globalConfiguration:null,
         }
     }
 
@@ -57,6 +58,10 @@ export default class App extends React.Component{
                 if (this.twitch.configuration.broadcaster) {
                     this.loadGameStateFromString(this.twitch.configuration.broadcaster.content)
                 }
+
+                if (this.twitch.configuration.global) {
+                    this.setState({globalConfiguration: JSON.parse(this.twitch.configuration.global.content)})
+                }
             })
 
             this.twitch.listen('broadcast',(target,contentType,body)=>{
@@ -85,8 +90,16 @@ export default class App extends React.Component{
         }
     }
 
+    setupGame(gameKey) {
+        this.twitch.rig.log('SENDING REQUEST TO BACKEND TO LISTEN FOR GAME CHANGES')
+        this.twitch.rig.log(`channelId ${this.Authentication.getChannelId()}`)
+        this.twitch.rig.log(`token ${this.Authentication.getToken()}`)
+        this.twitch.rig.log(`gameKey ${gameKey}`)
+        this.twitch.rig.log(`TO ${this.state.globalConfiguration.apiEndpoint}`)
+    }
+
     render(){
-        const {gameState, isVisible, finishedLoading} = this.state
+        const {gameState, isVisible, finishedLoading, globalConfiguration} = this.state
         if(finishedLoading && isVisible) {
             return (
                 <div className="App">
@@ -96,8 +109,8 @@ export default class App extends React.Component{
                         </Overlay>}
                         {this.Authentication.isModerator() && <Overlay openLabel='open mod panel'>
                             <ModConfig
-                                channelId={this.Authentication.getChannelId()}
-                                token={this.Authentication.state.token}
+                                setupGame={this.setupGame.bind(this)}
+                                gameKey={gameState && gameState.key}
                             />
                         </Overlay>}
                     </div>

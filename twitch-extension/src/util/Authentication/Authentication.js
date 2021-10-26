@@ -33,6 +33,10 @@ export default class Authentication{
         return this.state.channel_id
     }
 
+    getToken(){
+        return this.state.token
+    }
+
     isBroadcaster(){
         return this.state.isBroadcaster
     }

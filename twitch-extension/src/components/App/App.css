@@ -13,3 +13,11 @@
 .App .PublicObjectives {
     background-color: white;
 }
+
+.App .ModConfig {
+    background-color: white;
+}
+
+.App .Overlay button.close {
+    margin: .5em
+}
