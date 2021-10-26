@@ -110,7 +110,7 @@
     "whitelistedPanelUrls": []
   },
   "frontendCommand": "npm run start",
-  "frontendFolderName": "extensions-boilerplate",
+  "frontendFolderName": "twitch-extension",
   "name": "ti4-tts-overlay",
   "usingRandomFrontendHostingPort": false,
   "version": 3
