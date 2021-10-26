@@ -1,9 +1,12 @@
-import React from 'react'
+import React, {useState} from 'react'
+
 import Authentication from '../../util/Authentication/Authentication'
 
-import './App.css'
+import {PublicObjectives} from './PublicObjectives'
+import {Overlay} from './Overlay'
+import {ModConfig} from './ModConfig'
 
-const ModConfig = ({ channelId, token }) => <p>mod config for {channelId} with token {token}</p>
+import './App.css'
 
 export default class App extends React.Component{
     constructor(props){
@@ -50,10 +53,14 @@ export default class App extends React.Component{
                 }
             })
 
-            this.twitch.listen('broadcast',(target,contentType,body)=>{
-                const gameState = JSON.parse(body.replaceAll('\'', '"'))
+            this.twitch.configuration.onChanged(config => {
+                if (this.twitch.configuration.broadcaster) {
+                    this.loadGameStateFromString(this.twitch.configuration.broadcaster.content)
+                }
+            })
 
-                this.setState({gameState})
+            this.twitch.listen('broadcast',(target,contentType,body)=>{
+                const gameState = this.loadGameStateFromString(body)
                 if (this.Authentication.isBroadcaster()) {
                     // TODO set in the broadcast configuration
                 }
@@ -69,6 +76,12 @@ export default class App extends React.Component{
         }
     }
 
+    loadGameStateFromString(gameStateString){
+        const gameState = JSON.parse(gameStateString)
+
+        this.setState({gameState})
+    }
+
     componentWillUnmount(){
         if(this.twitch){
             this.twitch.unlisten('broadcast', ()=>console.log('successfully unlistened'))
@@ -76,18 +89,20 @@ export default class App extends React.Component{
     }
 
     render(){
-        const {gameState} = this.state
-        if(this.state.finishedLoading && this.state.isVisible){
+        const {gameState, isVisible, finishedLoading} = this.state
+        if(finishedLoading && isVisible) {
             return (
                 <div className="App">
                     <div className={this.state.theme === 'light' ? 'App-light' : 'App-dark'} >
-                        <p>My token is: {this.Authentication.state.token}</p>
-                        <pre>{JSON.stringify(this.Authentication.state, null, 2)}</pre>
-                        <pre>{JSON.stringify(gameState, null, 2)}</pre>
-                        {this.Authentication.isModerator() && <ModConfig
-                            channelId={this.Authentication.getChannelId()}
-                            token={this.Authentication.state.token}
-                        />}
+                        {gameState && <Overlay openLabel='see objectives'>
+                            <PublicObjectives {...gameState}/>
+                        </Overlay>}
+                        {this.Authentication.isModerator() && <Overlay openLabel='open mod panel'>
+                            <ModConfig
+                                channelId={this.Authentication.getChannelId()}
+                                token={this.Authentication.state.token}
+                            />
+                        </Overlay>}
                     </div>
                 </div>
             )
