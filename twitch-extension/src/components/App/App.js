@@ -61,9 +61,6 @@ export default class App extends React.Component{
 
             this.twitch.listen('broadcast',(target,contentType,body)=>{
                 const gameState = this.loadGameStateFromString(body)
-                if (this.Authentication.isBroadcaster()) {
-                    // TODO set in the broadcast configuration
-                }
             })
 
             this.twitch.onVisibilityChanged((isVisible,_c)=>{
