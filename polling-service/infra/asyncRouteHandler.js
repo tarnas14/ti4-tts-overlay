@@ -29,9 +29,18 @@ const asyncRouteHandler = (arg1, arg2) => {
             return
           }
 
-          const {status, ...rest} = result
-          res.status(status || 200)
-          res.json(rest)
+          res.status(result.status || 200)
+          if (result.json) {
+            res.json(result.json)
+            return
+          }
+
+          if (result.send) {
+            res.send(result.send)
+            return
+          }
+
+          res.end()
         } catch (error) {
           if (options.transaction) {
             await req.db.transaction.rollback()
