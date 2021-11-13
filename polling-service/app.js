@@ -6,9 +6,9 @@ const logger = require('morgan')
 
 const indexRouter = require('./routes/index')
 const sessionsRouter = require('./routes/sessions')
-const {useDb} = require('./infra')
+const {router: authorizationRouter} = require('./authorization')
 
-module.exports = (pool) => {
+module.exports = (di) => {
   const app = express()
 
   // view engine setup
@@ -20,10 +20,11 @@ module.exports = (pool) => {
   app.use(express.urlencoded({ extended: false }))
   app.use(cookieParser())
   app.use(express.static(path.join(__dirname, 'public')))
+  app.use(di)
 
-  app.use('/', useDb(pool))
-  app.use('/', indexRouter)
+  app.use('/auth', authorizationRouter)
   app.use('/sessions', sessionsRouter)
+  app.use('/', indexRouter)
 
   // catch 404 and forward to error handler
   app.use(function(req, res, next) {

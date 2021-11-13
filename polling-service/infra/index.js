@@ -1,9 +1,10 @@
 const asyncRouteHandler = require('./asyncRouteHandler')
-const {useDb, getPool, closePool} = require('./useDb')
+const {getPool, closePool} = require('./useDb')
+const diFactory = require('./diFactory')
 
 module.exports = {
   asyncRouteHandler,
-  useDb,
   getPool,
   closePool,
+  diFactory,
 }

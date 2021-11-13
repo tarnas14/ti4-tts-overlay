@@ -4,10 +4,11 @@
  * Module dependencies.
  */
 
-var {closePool, getPool} = require('../infra')
-var appFactory = require('../app')
 var debug = require('debug')('polling-service:server')
 var http = require('http')
+
+var {closePool, getPool, diFactory} = require('../infra')
+var appFactory = require('../app')
 
 /**
  * Get port from environment and store in Express.
@@ -56,7 +57,8 @@ async function start() {
     debug('Listening on ' + bind)
   }
 
-  const app = appFactory(pool)
+  const di = diFactory(pool)
+  const app = appFactory(di)
   app.set('port', port)
 
   var server = http.createServer(app)

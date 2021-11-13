@@ -13,18 +13,6 @@ const dbFactory = async pool => {
   }
 }
 
-const useDb = pool => async function(req, res, next) {
-  try {
-    if (!req.db) {
-      req.db = await dbFactory(pool)
-    }
-
-    next()
-  } catch (e) {
-    next(e)
-  }
-}
-
 const getPool = async () => {
   // TODO retry connection etc
   return new Pool()
@@ -35,7 +23,7 @@ const closePool = async (pool) => {
 }
 
 module.exports = {
-  useDb,
+  dbFactory,
   getPool,
   closePool,
 }
