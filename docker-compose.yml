@@ -1,0 +1,28 @@
+version: "3.9"
+services:
+  polling-service:
+    image: "node:16"
+    user: "node"
+    working_dir: /home/node/app
+    environment:
+      - PGUSER=postgres
+      - PGHOST=postgres
+      - PGPASSWORD=ti4TTStwitchEXTENSION
+      - PGDATABASE=ti4-tts-twitch-extension
+      - PGPORT=5432
+      - AUTHORIZED_CLIENTS=testClient:testKey
+      - UUID_NAMESPACE=1e2a584b-1b0a-4644-a962-ff2a12e33ba0
+    volumes:
+      - ./polling-service:/home/node/app
+    ports:
+      - "3000:3000"
+    command: "yarn start-watch"
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=ti4TTStwitchEXTENSION
+      - POSTGRES_DB=ti4-tts-twitch-extension
+    ports:
+      - "5432:5432"
