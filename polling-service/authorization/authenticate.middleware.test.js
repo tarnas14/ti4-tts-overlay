@@ -5,7 +5,7 @@ test('should call next if provided access token is valid', async () => {
   const req = {
     get: jest.fn().mockReturnValueOnce('Bearer someValidAccessToken'),
     authRepository: {
-      validate: jest.fn().mockResolvedValueOnce(true)
+      getClientIdByToken: jest.fn().mockResolvedValueOnce('adsf')
     }
   }
   const res = {}
@@ -17,15 +17,33 @@ test('should call next if provided access token is valid', async () => {
   // then
   expect(next).toHaveBeenCalled()
   expect(next.mock.calls[0][0]).not.toBeDefined()
-  expect(req.authRepository.validate).toHaveBeenCalledWith('someValidAccessToken')
+  expect(req.authRepository.getClientIdByToken).toHaveBeenCalledWith('someValidAccessToken')
+})
+
+test('should add clientId to req if token is valid', async () => {
+  // given
+  const req = {
+    get: jest.fn().mockReturnValueOnce('Bearer someValidAccessToken'),
+    authRepository: {
+      getClientIdByToken: jest.fn().mockResolvedValueOnce('clientId')
+    }
+  }
+  const res = {}
+  const next = () => {}
+
+  // when
+  await authenticate(req, res, next)
+
+  // then
+  expect(req.clientId).toEqual('clientId')
 })
 
 test('should return 401 if token is invalid', async () => {
   // given
   const req = {
-    get: jest.fn().mockReturnValueOnce('Bearer someValidAccessToken'),
+    get: jest.fn().mockReturnValueOnce('Bearer invalidAccessToken'),
     authRepository: {
-      validate: jest.fn().mockResolvedValueOnce(false)
+      getClientIdByToken: jest.fn().mockResolvedValueOnce(null)
     }
   }
   const res = {
@@ -40,3 +58,4 @@ test('should return 401 if token is invalid', async () => {
   expect(next).not.toHaveBeenCalled()
   expect(res.sendStatus).toHaveBeenCalledWith(401)
 })
+

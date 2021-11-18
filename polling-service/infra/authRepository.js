@@ -9,10 +9,14 @@ const factory = (query, config) => {
 
       return token
     },
-    validate: async(token) => {
+    getClientIdByToken: async(token) => {
       const results = await query('SELECT * FROM auth WHERE token = $1', [token])
 
-      return results.rows.length === 1
+      if (!results.rows.length) {
+        return null
+      }
+
+      return results.rows[0].clientId
     }
   }
 }

@@ -43,3 +43,13 @@ $ docker-compose up
 
 Step 2:
 Run [DB_SETUP.sql](./polling-service/DB_SETUP.sql) against your db (we will introduce migrations one day)
+
+### authentication
+
+1. exchange your clientId/apiKey pair for accessToken by making a GET request against `/auth/getAccessToken`
+1. use the token in `Authorization` header as `Bearer <your token>`
+
+test values available after setup:
+- clientId: `testClient`
+- apiKey: `testKey`
+- accessToken: `testToken`

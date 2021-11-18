@@ -5,7 +5,7 @@ const cookieParser = require('cookie-parser')
 const logger = require('morgan')
 
 const indexRouter = require('./routes/index')
-const sessionsRouter = require('./routes/sessions')
+const {router: sessionsRouter} = require('./sessions')
 const {router: authorizationRouter, authenticate} = require('./authorization')
 
 module.exports = (di) => {

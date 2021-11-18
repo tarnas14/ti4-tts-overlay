@@ -1,5 +1,6 @@
 const {dbFactory} = require('./useDb')
 const authRepositoryFactory = require('./authRepository')
+const sessionRepositoryFactory = require('./sessionRepository')
 const configFactory = require('./config')
 
 const diFactory = pool => {
@@ -15,6 +16,10 @@ const diFactory = pool => {
 
       if (!req.authRepository) {
         req.authRepository = authRepositoryFactory(req.db.query, req.config)
+      }
+
+      if (!req.sessionRepository) {
+        req.sessionRepository = sessionRepositoryFactory(req.db.query, req.config)
       }
 
       next()
