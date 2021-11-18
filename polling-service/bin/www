@@ -6,9 +6,13 @@
 
 var debug = require('debug')('polling-service:server')
 var http = require('http')
+var cron = require('node-cron');
 
 var {closePool, getPool, diFactory} = require('../infra')
+var {dbFactory} = require('../infra/useDb')
 var appFactory = require('../app')
+var pollerFactory = require('../poller')
+const configFactory = require('../infra/config')
 
 /**
  * Get port from environment and store in Express.
@@ -57,7 +61,9 @@ async function start() {
     debug('Listening on ' + bind)
   }
 
-  const di = diFactory(pool)
+  const db = await dbFactory(pool)
+  const config = configFactory()
+  const di = diFactory(db, config)
   const app = appFactory(di)
   app.set('port', port)
 
@@ -67,6 +73,9 @@ async function start() {
   server.on('close', onClose)
   server.on('error', onError)
   server.on('listening', onListening)
+
+  const poller = pollerFactory(db, config)
+  cron.schedule(config.pollerCron, poller)
 }
 
 start()

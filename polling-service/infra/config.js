@@ -9,10 +9,12 @@ const authorizedClientsFactory = () => {
   })
 }
 
+const EVERY_5_MINUTES = '*/5 * * * *'
 const factory = () => {
   return {
     authorizedClients: authorizedClientsFactory(),
     uuidNamespace: process.env.UUID_NAMESPACE,
+    pollerCron: process.env.POLLER_CRON || EVERY_5_MINUTES,
   }
 }
 
