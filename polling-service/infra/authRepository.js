@@ -1,6 +1,19 @@
-const factory = () => {
+const { v5 } = require('uuid')
+
+const factory = (query, config) => {
   return {
-    authorize: (params) => console.log('authorizing', params)
+    authorize: async ({ clientId, apiKey }) => {
+      const token = v5(`${clientId}.${apiKey}.${Date.now()}`, config.uuidNamespace)
+
+      await query("INSERT INTO auth (token) VALUES($1)", [token])
+
+      return token
+    },
+    validate: async(token) => {
+      const results = await query('SELECT * FROM auth WHERE token = $1', [token])
+
+      return results.rows.length === 1
+    }
   }
 }
 

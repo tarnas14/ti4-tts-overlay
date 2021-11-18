@@ -31,3 +31,15 @@ Below you will find a list of elements, which are connected with arrows on a scr
 - Twitch PubSub - twitch API for broadcasting messages to extension instances for all viewers; we will push updated data from listener service to here, so that loaded extensions get state updates
 
 ![General scribbled architecture](./docs/tts-overlay-architecture.png)
+
+## development
+
+### to run the application
+
+Step 1:
+```bash
+$ docker-compose up
+```
+
+Step 2:
+Run [DB_SETUP.sql](./polling-service/DB_SETUP.sql) against your db (we will introduce migrations one day)

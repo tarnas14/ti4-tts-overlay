@@ -22,7 +22,7 @@ const getAccessToken = async (req, res, next) => {
   const accessToken = await req.authRepository.authorize({clientId, apiKey})
 
   return {
-    accessToken
+    json: { accessToken }
   }
 }
 

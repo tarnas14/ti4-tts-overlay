@@ -6,7 +6,7 @@ const logger = require('morgan')
 
 const indexRouter = require('./routes/index')
 const sessionsRouter = require('./routes/sessions')
-const {router: authorizationRouter} = require('./authorization')
+const {router: authorizationRouter, authenticate} = require('./authorization')
 
 module.exports = (di) => {
   const app = express()
@@ -23,7 +23,7 @@ module.exports = (di) => {
   app.use(di)
 
   app.use('/auth', authorizationRouter)
-  app.use('/sessions', sessionsRouter)
+  app.use('/sessions', authenticate, sessionsRouter)
   app.use('/', indexRouter)
 
   // catch 404 and forward to error handler

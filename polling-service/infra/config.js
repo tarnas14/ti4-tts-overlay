@@ -11,7 +11,8 @@ const authorizedClientsFactory = () => {
 
 const factory = () => {
   return {
-    authorizedClients: authorizedClientsFactory()
+    authorizedClients: authorizedClientsFactory(),
+    uuidNamespace: process.env.UUID_NAMESPACE,
   }
 }
 

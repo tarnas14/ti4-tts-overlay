@@ -9,7 +9,7 @@ const dbFactory = async pool => {
       commit: () => client.query('COMMIT'),
       rollback: () => client.query('ROLLBACK'),
     },
-    query: client.query.bind(client),
+    query: (...args) => client.query(...args),
   }
 }
 

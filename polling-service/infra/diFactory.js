@@ -14,7 +14,7 @@ const diFactory = pool => {
       }
 
       if (!req.authRepository) {
-        req.authRepository = authRepositoryFactory()
+        req.authRepository = authRepositoryFactory(req.db.query, req.config)
       }
 
       next()

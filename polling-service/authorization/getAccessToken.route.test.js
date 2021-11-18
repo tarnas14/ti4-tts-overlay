@@ -33,7 +33,7 @@ test('should get accessToken from repository if client and apiKey are authorized
   // then
   expect(authorize).toHaveBeenCalledWith({clientId: 'mockClientId', apiKey: 'mockApiKey'})
   expect(result.status).not.toBeDefined()
-  expect(result.accessToken).toBe(accessToken)
+  expect(result.json).toEqual({ accessToken })
 })
 
 test('should return 401 if client/key is not present in configuration', async () => {
