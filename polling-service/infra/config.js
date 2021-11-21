@@ -15,6 +15,8 @@ const factory = () => {
     authorizedClients: authorizedClientsFactory(),
     uuidNamespace: process.env.UUID_NAMESPACE,
     pollerCron: process.env.POLLER_CRON || EVERY_5_MINUTES,
+    mockTTSDataUrl: process.env.MOCK_TTS_DATA,
+    prodTTSDataUrl: process.env.PROD_TTS_DATA,
   }
 }
 
