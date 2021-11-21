@@ -12,6 +12,9 @@ services:
       - PGPORT=5432
       - AUTHORIZED_CLIENTS=testClient:testKey
       - UUID_NAMESPACE=1e2a584b-1b0a-4644-a962-ff2a12e33ba0
+      - POLLER_CRON=* * * * * *
+      - MOCK_TTS_DATA=https://ti4-game-data.appspot.com/static/demo.json
+      - PROD_TTS_DATA=https://ti4-game-data.appspot.com
     volumes:
       - ./polling-service:/home/node/app
     ports:

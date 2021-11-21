@@ -15,6 +15,7 @@ create table if not exists sessions (
   "createdOn" timestamp not null default now(),
   "active" boolean not null default TRUE,
   "pollingInterval" int not null default 10,
+  "lastUpdate" timestamp,
   constraint pk_sessions_id primary key (id)
 );
 --  alter table pipelines

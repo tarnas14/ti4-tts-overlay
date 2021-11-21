@@ -15,6 +15,19 @@ const factory = (query, config) => {
 
       return id
     },
+    getSessionsToUpdate: async () => {
+      const results = await query(`SELECT * from sessions WHERE
+        active=TRUE AND
+        (("lastUpdate" IS NULL) OR (EXTRACT(EPOCH FROM (now() - "lastUpdate")) > ("pollingInterval" * 60)))
+      `)
+
+      return results.rows
+    },
+    setUpdated: async (id) => {
+      const results = await query('UPDATE sessions SET "lastUpdate"=$1 WHERE id=$2', [new Date(), id])
+
+      return results.rowCount === 1
+    },
   }
 }
 

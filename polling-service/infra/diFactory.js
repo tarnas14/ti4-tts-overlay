@@ -1,17 +1,15 @@
-const {dbFactory} = require('./useDb')
 const authRepositoryFactory = require('./authRepository')
 const sessionRepositoryFactory = require('./sessionRepository')
-const configFactory = require('./config')
 
-const diFactory = pool => {
+const diFactory = (db, config) => {
   return async (req, res, next) => {
     try {
       if (!req.config) {
-        req.config = configFactory()
+        req.config = config
       }
 
-      if (!req.db)  {
-        req.db = await dbFactory(pool)
+      if (!req.db) {
+        req.db = db
       }
 
       if (!req.authRepository) {
