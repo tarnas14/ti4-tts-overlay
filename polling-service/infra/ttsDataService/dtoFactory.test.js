@@ -3,58 +3,62 @@ const dtoFactory = require('./dtoFactory')
 test('should get public objectives', () => {
   // given
   const expected = {
-    objectives: [
-      {
-        slug: 'diversify-research',
-        scoredBy: [
-          'The_L1Z1X_Mindnet',
-          'The_Clan_of_Saar',
-          'The_Mahact_Gene__Sorcerers',
-          'The_Embers_of_Muaat',
-          'Sardakk_Norr',
-        ],
-      },
-      {
-        slug: 'improve-infrastructure',
-        scoredBy: [
-          'The_Titans_of_Ul',
-          'The_Embers_of_Muaat',
-          'Sardakk_Norr',
-        ],
-      },
-      {
-        slug: 'explore-deep-space',
-        scoredBy: [
-          'The_Clan_of_Saar',
-          'The_Mahact_Gene__Sorcerers',
-        ],
-      },
-      {
-        slug: 'make-history',
-        scoredBy: [
-          'The_L1Z1X_Mindnet',
-          'The_Clan_of_Saar',
-          'The_Mahact_Gene__Sorcerers',
-          'Sardakk_Norr',
-        ],
-      },
-      {
-        slug: 'raise-a-fleet',
-        scoredBy: [
-          'The_Titans_of_Ul',
-          'The_L1Z1X_Mindnet',
-          'The_Clan_of_Saar',
-          'The_Mahact_Gene__Sorcerers',
-          'The_Embers_of_Muaat',
-        ],
-      },
-      {
-        slug: 'reclaim-ancient-monuments',
-        scoredBy: [
-          'The_Mahact_Gene__Sorcerers',
-        ],
-      },
-    ]
+    objectives: {
+      pI: [
+        {
+          slug: 'diversify-research',
+          scoredBy: [
+            'The_L1Z1X_Mindnet',
+            'The_Clan_of_Saar',
+            'The_Mahact_Gene__Sorcerers',
+            'The_Embers_of_Muaat',
+            'Sardakk_Norr',
+          ],
+        },
+        {
+          slug: 'improve-infrastructure',
+          scoredBy: [
+            'The_Titans_of_Ul',
+            'The_Embers_of_Muaat',
+            'Sardakk_Norr',
+          ],
+        },
+        {
+          slug: 'explore-deep-space',
+          scoredBy: [
+            'The_Clan_of_Saar',
+            'The_Mahact_Gene__Sorcerers',
+          ],
+        },
+        {
+          slug: 'make-history',
+          scoredBy: [
+            'The_L1Z1X_Mindnet',
+            'The_Clan_of_Saar',
+            'The_Mahact_Gene__Sorcerers',
+            'Sardakk_Norr',
+          ],
+        },
+        {
+          slug: 'raise-a-fleet',
+          scoredBy: [
+            'The_Titans_of_Ul',
+            'The_L1Z1X_Mindnet',
+            'The_Clan_of_Saar',
+            'The_Mahact_Gene__Sorcerers',
+            'The_Embers_of_Muaat',
+          ],
+        },
+      ],
+      pII: [
+        {
+          slug: 'reclaim-ancient-monuments',
+          scoredBy: [
+            'The_Mahact_Gene__Sorcerers',
+          ],
+        },
+      ]
+    }
   }
 
   // when
