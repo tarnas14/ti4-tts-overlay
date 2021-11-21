@@ -17,7 +17,7 @@ const factory = ({
     const promises = sessionsToUpdate.map(async session => {
       try {
         const data = await ttsDataService.get(session.ttsKey)
-        await twitchNotifications.broadcast(data)
+        await twitchNotifications.broadcast(session.config.channelId, data)
         await sessionRepository.setUpdated(session.id)
       } catch (err) {
         errors++
