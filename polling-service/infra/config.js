@@ -19,7 +19,8 @@ const factory = () => {
     prodTTSDataUrl: process.env.PROD_TTS_DATA,
     twitchClientId: process.env.TWITCH_CLIENT_ID,
     twitchSecret: process.env.TWITCH_SECRET,
-    twitchExtensionOwnerChannelId: process.env.TWITCH_OWNER
+    twitchExtensionOwnerChannelId: process.env.TWITCH_OWNER,
+    allowedOrigin: process.env.ALLOWED_ORIGIN || 'https://localhost:8080'
   }
 }
 

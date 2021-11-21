@@ -3,13 +3,17 @@ const express = require('express')
 const path = require('path')
 const cookieParser = require('cookie-parser')
 const logger = require('morgan')
+const cors = require('cors')
 
 const indexRouter = require('./routes/index')
 const {router: sessionsRouter} = require('./sessions')
 const {router: authorizationRouter, authenticate} = require('./authorization')
 
-module.exports = (di) => {
+module.exports = (di, config) => {
   const app = express()
+  app.use(cors({
+    origin: config.allowedOrigin,
+  }))
 
   // view engine setup
   app.set('views', path.join(__dirname, 'views'))

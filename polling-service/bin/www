@@ -64,7 +64,7 @@ async function start() {
   const db = await dbFactory(pool)
   const config = configFactory()
   const di = diFactory(db, config)
-  const app = appFactory(di)
+  const app = appFactory(di, config)
   app.set('port', port)
 
   var server = http.createServer(app)
