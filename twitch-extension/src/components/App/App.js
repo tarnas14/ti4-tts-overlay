@@ -65,6 +65,9 @@ export default class App extends React.Component{
             })
 
             this.twitch.listen('broadcast',(target,contentType,body)=>{
+              this.twitch.rig.log('broadcast!')
+              this.twitch.rig.log(target)
+              this.twitch.rig.log(body)
                 const gameState = this.loadGameStateFromString(body)
             })
 
