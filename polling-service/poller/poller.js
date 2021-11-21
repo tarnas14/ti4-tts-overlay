@@ -18,7 +18,7 @@ const factory = ({
       try {
         const data = await ttsDataService.get(session.ttsKey)
         await twitchNotifications.broadcast(data)
-        await sessionRepository.updated(session.id)
+        await sessionRepository.setUpdated(session.id)
       } catch (err) {
         errors++
         console.error('error sending update for session', session.id)

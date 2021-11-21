@@ -23,7 +23,7 @@ const factory = (query, config) => {
 
       return results.rows
     },
-    updated: async (id) => {
+    setUpdated: async (id) => {
       const results = await query('UPDATE sessions SET "lastUpdate"=$1 WHERE id=$2', [new Date(), id])
 
       return results.rowCount === 1
