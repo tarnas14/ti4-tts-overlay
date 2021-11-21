@@ -20,7 +20,7 @@ const factory = (config) => {
       }
     })
 
-    return request.post(`https://api.twitch.tv/extensions/message/${channelId}`)
+    const broadcastPromise = request.post(`https://api.twitch.tv/extensions/message/${channelId}`)
       .send({
         content_type: 'application/json',
         message: JSON.stringify(sessionData),
@@ -28,6 +28,17 @@ const factory = (config) => {
       })
       .set('Authorization', `Bearer ${token}`)
       .set('Client-Id', config.twitchClientId)
+
+    const configSetPromise = request.put(`https://api.twitch.tv/extensions/${config.twitchClientId}/configurations`)
+      .send({
+        channel_id: channelId,
+        segment: 'broadcaster',
+        content: JSON.stringify(sessionData),
+      })
+      .set('Authorization', `Bearer ${token}`)
+      .set('Client-Id', config.twitchClientId)
+
+    return Promise.allSettled([broadcastPromise, configSetPromise])
   }
 
   return {
