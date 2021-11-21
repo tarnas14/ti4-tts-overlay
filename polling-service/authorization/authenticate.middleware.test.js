@@ -59,3 +59,23 @@ test('should return 401 if token is invalid', async () => {
   expect(res.sendStatus).toHaveBeenCalledWith(401)
 })
 
+test('should return 401 if token is missing', async () => {
+  // given
+  const req = {
+    get: jest.fn().mockReturnValueOnce(undefined),
+    authRepository: {
+      getClientIdByToken: jest.fn().mockResolvedValueOnce(null)
+    }
+  }
+  const res = {
+    sendStatus: jest.fn()
+  }
+  const next = jest.fn()
+
+  // when
+  await authenticate(req, res, next)
+
+  // then
+  expect(next).not.toHaveBeenCalled()
+  expect(res.sendStatus).toHaveBeenCalledWith(401)
+})

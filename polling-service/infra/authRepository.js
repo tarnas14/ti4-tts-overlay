@@ -5,7 +5,7 @@ const factory = (query, config) => {
     authorize: async ({ clientId, apiKey }) => {
       const token = v5(`${clientId}.${apiKey}.${Date.now()}`, config.uuidNamespace)
 
-      await query("INSERT INTO auth (token, clientId) VALUES($1, $2, $3)", [token, clientId])
+      await query('INSERT INTO auth (token, "clientId") VALUES($1, $2)', [token, clientId])
 
       return token
     },

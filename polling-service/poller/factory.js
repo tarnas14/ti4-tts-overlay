@@ -1,14 +1,13 @@
 const sessionRepositoryFactory = require('../infra/sessionRepository')
 const ttsDataServiceFactory = require('../infra/ttsDataService')
+const twitchNotificationsFactory = require('../infra/twitchNotifications')
 
 const pollerFactory = require('./poller')
 
 const factory = (db, config) => {
   const sessionRepository = sessionRepositoryFactory(db.query, config)
 
-  const twitchNotifications = {
-    broadcast: session => console.log('broadcasting session data', JSON.stringify(session, null, 2))
-  }
+  const twitchNotifications = twitchNotificationsFactory(config)
 
   const ttsDataService = ttsDataServiceFactory({
     config,

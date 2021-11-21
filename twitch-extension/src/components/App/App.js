@@ -65,6 +65,9 @@ export default class App extends React.Component{
             })
 
             this.twitch.listen('broadcast',(target,contentType,body)=>{
+              this.twitch.rig.log('broadcast!')
+              this.twitch.rig.log(target)
+              this.twitch.rig.log(body)
                 const gameState = this.loadGameStateFromString(body)
             })
 
@@ -90,12 +93,47 @@ export default class App extends React.Component{
         }
     }
 
+    authWithPollingService() {
+        return fetch(`${this.state.globalConfiguration.apiEndpoint}/auth/getAccessToken`, {
+          headers: {
+            'x-client-id': this.state.globalConfiguration.clientId,
+            'x-api-key': this.state.globalConfiguration.apiKey,
+            'Accept': 'application/json',
+          },
+        }).then(response => response.json())
+        .then(body => body.accessToken)
+        .then(token => this.setState(state => ({
+          globalConfiguration: {
+            ...state.globalConfiguration,
+            authToken: token,
+          }
+        })))
+
+    }
+
     setupGame(gameKey) {
-        this.twitch.rig.log('SENDING REQUEST TO BACKEND TO LISTEN FOR GAME CHANGES')
-        this.twitch.rig.log(`channelId ${this.Authentication.getChannelId()}`)
-        this.twitch.rig.log(`token ${this.Authentication.getToken()}`)
-        this.twitch.rig.log(`gameKey ${gameKey}`)
-        this.twitch.rig.log(`TO ${this.state.globalConfiguration.apiEndpoint}`)
+      this.twitch.rig.log('SENDING REQUEST TO BACKEND TO LISTEN FOR GAME CHANGES')
+      this.twitch.rig.log(`channelId ${this.Authentication.getChannelId()}`)
+      this.twitch.rig.log(`gameKey ${gameKey}`)
+      this.twitch.rig.log(`TO ${this.state.globalConfiguration.apiEndpoint}`)
+      let chain = Promise.resolve()
+      if (!this.state.globalConfiguration.authToken) {
+        chain = chain.then(() => this.authWithPollingService())
+      }
+
+      chain.then(() => fetch(`${this.state.globalConfiguration.apiEndpoint}/sessions`, {
+        method: 'post',
+        headers: {
+          'Authorization': `Bearer ${this.state.globalConfiguration.authToken}`,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          type: 'twitch',
+          channelId: this.Authentication.getChannelId(),
+          ttsKey: gameKey,
+        })
+      }))
     }
 
     render(){
