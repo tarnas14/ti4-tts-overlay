@@ -1,15 +1,43 @@
 const { Pool } = require('pg')
 
 const dbFactory = async pool => {
-  const client = await pool.connect()
+  let transaction = false
+  let client = null
 
   return {
     transaction: {
-      begin: () => client.query('BEGIN'),
-      commit: () => client.query('COMMIT'),
-      rollback: () => client.query('ROLLBACK'),
+      begin: async () => {
+        transaction = true
+        client = await pool.connect()
+        await client.query('BEGIN')
+      },
+      commit: async () => {
+        client.query('COMMIT')
+        transaction = false
+        await client.release()
+        client = null
+      },
+      rollback: async () => {
+        await client.query('ROLLBACK')
+        transaction = false
+        await client.release()
+        client = null
+      },
     },
-    query: (...args) => client.query(...args),
+    query: async (...args) => {
+      if (!client) {
+        client = await pool.connect()
+      }
+
+      const result = client.query(...args)
+
+      if (!transaction) {
+        await client.release()
+        client = null
+      }
+
+      return result
+    },
   }
 }
 
